@@ -1,0 +1,198 @@
+<template>
+    <div class="expense-shell">
+        <div class="top-bar">
+            <h1>Expenses</h1>
+
+            <button class="new-button" onclick={openNewModal}>
+                New
+            </button>
+        </div>
+
+        <div class="main-layout">
+            <aside class="sidebar">
+                <div class="sidebar-title">Months</div>
+
+                <template for:each={monthItems} for:item="month">
+                    <button
+                        key={month.value}
+                        class={month.className}
+                        data-month={month.value}
+                        onclick={handleMonthClick}>
+                        {month.label}
+                    </button>
+                </template>
+
+                <div class="year-title">Year</div>
+
+                <div class="year-list">
+                    <template for:each={yearItems} for:item="year">
+                        <button
+                            key={year.value}
+                            class={year.className}
+                            data-year={year.value}
+                            onclick={handleYearClick}>
+                            {year.label}
+                        </button>
+                    </template>
+                </div>
+            </aside>
+
+            <section class="content">
+                <template if:true={isLoading}>
+                    <div class="loading-box">
+                        <lightning-spinner alternative-text="Loading"></lightning-spinner>
+                    </div>
+                </template>
+
+                <template if:false={isLoading}>
+                    <template if:true={hasExpenses}>
+                        <lightning-accordion
+                            allow-multiple-sections-open
+                            active-section-name={activeSections}>
+
+                            <template for:each={groupedExpenses} for:item="group">
+                                <lightning-accordion-section
+                                    key={group.dateKey}
+                                    name={group.dateKey}
+                                    label={group.dateLabel}>
+
+                                    <table class="expense-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Description</th>
+                                                <th class="amount-column">Amount</th>
+                                                <th class="action-column">Action</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <template for:each={group.items} for:item="item">
+                                                <tr key={item.id}>
+                                                    <td>
+                                                        <div class="description-cell">
+                                                            <span>{item.description}</span>
+
+                                                            <button
+                                                                class="icon-button"
+                                                                data-id={item.id}
+                                                                onclick={openEditModal}
+                                                                title="Edit">
+                                                                <lightning-icon
+                                                                    icon-name="utility:edit"
+                                                                    size="x-small">
+                                                                </lightning-icon>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                    <td class="amount-column">
+                                                        <div class="amount-cell">
+                                                            <span>{item.amountLabel}</span>
+
+                                                            <button
+                                                                class="icon-button"
+                                                                data-id={item.id}
+                                                                onclick={openEditModal}
+                                                                title="Edit">
+                                                                <lightning-icon
+                                                                    icon-name="utility:edit"
+                                                                    size="x-small">
+                                                                </lightning-icon>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+
+                                                    <td class="action-column">
+                                                        <button
+                                                            class="delete-button"
+                                                            data-id={item.id}
+                                                            onclick={handleDelete}>
+                                                            Delete
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </template>
+
+                                            <tr class="total-row">
+                                                <td>Total</td>
+                                                <td class="amount-column">{group.totalLabel}</td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </lightning-accordion-section>
+                            </template>
+                        </lightning-accordion>
+                    </template>
+
+                    <template if:false={hasExpenses}>
+                        <div class="empty-box">
+                            No expense cards for this month.
+                        </div>
+                    </template>
+                </template>
+            </section>
+        </div>
+    </div>
+
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container modal-container">
+
+                <header class="slds-modal__header">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close"
+                        title="Close"
+                        onclick={closeModal}>
+                        <lightning-icon
+                            icon-name="utility:close"
+                            alternative-text="Close"
+                            size="small">
+                        </lightning-icon>
+                    </button>
+
+                    <h2 class="slds-text-heading_medium">
+                        {modalTitle}
+                    </h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-record-edit-form
+                        object-api-name={expenseObject}
+                        record-id={selectedRecordId}
+                        onsuccess={handleFormSuccess}
+                        onerror={handleFormError}>
+
+                        <lightning-messages></lightning-messages>
+                        <lightning-input-field
+                            field-name={amountField}>
+                        </lightning-input-field>
+
+                        <lightning-input-field
+                            field-name={cardDateField}>
+                        </lightning-input-field>
+
+                        <lightning-input-field
+                            field-name={descriptionField}>
+                        </lightning-input-field>
+
+                        <div class="modal-footer">
+                            <lightning-button
+                                label="Cancel"
+                                onclick={closeModal}>
+                            </lightning-button>
+
+                            <lightning-button
+                                class="save-button"
+                                type="submit"
+                                label="Save"
+                                variant="brand">
+                            </lightning-button>
+                        </div>
+                    </lightning-record-edit-form>
+                </div>
+            </div>
+        </section>
+
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>
