@@ -1,3 +1,12 @@
 <template>
-    
+    <lightning-card title="Contacts">
+        <template for:each={contacts} for:item="contact">
+            <div key={contact.Id} class="contact-row">
+    <p class="contact-field">Name: {contact.Name}</p>
+    <p class="contact-field">Email: {contact.Email}</p>
+    <p class="contact-field">Phone: {contact.Phone}</p>
+    <p class="contact-field">Title: {contact.Title}</p>
+</div>
+        </template>
+    </lightning-card>
 </template>

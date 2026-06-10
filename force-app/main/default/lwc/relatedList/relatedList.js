@@ -1,17 +1,23 @@
-import getExpenses from '@salesforce/apex/ExpenseAppController.getExpenses';
-import { LightningElement } from 'lwc';
+import { LightningElement, api } from 'lwc';
+import getContacts from '@salesforce/apex/RelatedListController.getContacts';
 
 export default class RelatedList extends LightningElement {
+    @api recordId;
 
-    async loadExpenses() {
+    contacts = [];
 
+    connectedCallback() {
+        this.loadContacts();
+    }
+
+    async loadContacts() {
         try {
-            this.expenses = await getExpenses({
-                yearValue: this.selectedYear,
-                monthValue: this.selectedMonth
+            this.contacts = await getContacts({
+                accountID: this.recordId
             });
         } catch (error) {
-            this.showError(error);
+            this.contacts = [];
+            console.error(error);
         }
-    } 
+    }
 }
