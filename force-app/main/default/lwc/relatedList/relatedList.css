@@ -3,10 +3,14 @@
     flex-wrap: wrap;
     gap: 12px;
     padding: 12px;
-    border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid #ffffff;
+    color: #000000;
 }
 
 .contact-field {
     flex: 1 1 180px;
     margin: 0;
+    color: #911919;
 }
+
+
