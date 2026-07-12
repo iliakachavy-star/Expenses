@@ -1,12 +1,38 @@
 <template>
     <lightning-card title="Contacts">
-        <template for:each={contacts} for:item="contact">
-            <div key={contact.Id} class="contact-row">
-    <p class="contact-field">Name: {contact.Name}</p>
-    <p class="contact-field">Email: {contact.Email}</p>
-    <p class="contact-field">Phone: {contact.Phone}</p>
-    <p class="contact-field">Title: {contact.Title}</p>
-</div>
-        </template>
+        <div class="table-container">
+            <template lwc:if={isLoading}>
+                <lightning-spinner
+                    alternative-text="Loading contacts"
+                    size="small">
+                </lightning-spinner>
+            </template>
+
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                    <tr>
+                        <template for:each={columns} for:item="column">
+                            <th key={column.fieldApiName} scope="col">
+                                {column.label}
+                            </th>
+                        </template>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={contacts} for:item="record">
+                        <tr key={record.Id}>
+                            <template for:each={columns} for:item="column">
+                                <td key={column.fieldApiName}>
+                                    <c-related-list-cell
+                                        record={record}
+                                        column={column}>
+                                    </c-related-list-cell>
+                                </td>
+                            </template>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
     </lightning-card>
 </template>

@@ -1,0 +1,16 @@
+<template>
+    <template lwc:if={isEmail}>
+        <lightning-formatted-email value={fieldValue}>
+        </lightning-formatted-email>
+    </template>
+
+    <template lwc:elseif={isPhone}>
+        <lightning-formatted-phone value={fieldValue}>
+        </lightning-formatted-phone>
+    </template>
+
+    <template lwc:elseif={isText}>
+        <lightning-formatted-text value={fieldValue}>
+        </lightning-formatted-text>
+    </template>
+</template>
