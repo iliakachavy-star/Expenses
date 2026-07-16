@@ -2,13 +2,11 @@
     <lightning-card title="Contacts">
         <div class="table-container">
             <template lwc:if={isLoading}>
-                <lightning-spinner
-                    alternative-text="Loading contacts"
-                    size="small">
+                <lightning-spinner alternative-text="Loading contacts" size="small">
                 </lightning-spinner>
             </template>
 
-            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+            <table class="slds-table">
                 <thead>
                     <tr>
                         <template for:each={columns} for:item="column">
@@ -23,9 +21,7 @@
                         <tr key={record.Id}>
                             <template for:each={columns} for:item="column">
                                 <td key={column.fieldApiName}>
-                                    <c-related-list-cell
-                                        record={record}
-                                        column={column}>
+                                    <c-related-list-cell record={record} column={column}>
                                     </c-related-list-cell>
                                 </td>
                             </template>
