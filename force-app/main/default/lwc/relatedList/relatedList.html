@@ -6,29 +6,30 @@
                 </lightning-spinner>
             </template>
 
-            <table class="slds-table">
-                <thead>
-                    <tr>
+            <div class="slds-table">
+                <div class="table-header">
+                    <div class="table-row">
                         <template for:each={columns} for:item="column">
-                            <th key={column.fieldApiName} scope="col">
+                            <div key={column.fieldApiName} class="table-cell">
                                 {column.label}
-                            </th>
+                            </div>
                         </template>
-                    </tr>
-                </thead>
-                <tbody>
+                    </div>
+                </div>
+
+                <div class="table-body">
                     <template for:each={contacts} for:item="record">
-                        <tr key={record.Id}>
+                        <div key={record.Id} class="table-row">
                             <template for:each={columns} for:item="column">
-                                <td key={column.fieldApiName}>
+                                <div key={column.fieldApiName} class="table-cell">
                                     <c-related-list-cell record={record} column={column}>
                                     </c-related-list-cell>
-                                </td>
+                                </div>
                             </template>
-                        </tr>
+                        </div>
                     </template>
-                </tbody>
-            </table>
+                </div>
+            </div>
         </div>
     </lightning-card>
 </template>

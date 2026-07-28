@@ -3,12 +3,15 @@
     overflow-x: auto;
 }
 
-thead tr,tbody tr {
+.table-row {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;      
+    min-width: max-content; 
 }
 
-th, td {
-    flex: 1 1 180px;
+.table-cell {
+    flex: 0 0 180px;        
     min-width: 0;
+    padding: 0.5rem;        
+    box-sizing: border-box;
 }
